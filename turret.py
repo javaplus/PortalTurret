@@ -3,6 +3,7 @@ import utime
 import sg90
 from neopixel import Neopixel
 import turret_sound
+from guns import Guns
 
 numpix = 8
 strip = Neopixel(numpix, 0, 14, "GRB")
@@ -17,12 +18,7 @@ irq_state = None
 is_closing = False
 
 ## Init guns:
-#laser_1
-laser_1 = PWM(Pin(13))
-laser_1.freq(1000)
-#Laser 2
-laser_2 = PWM(Pin(27))
-laser_2.freq(1000)
+guns = Guns(13,27)
 
 sg90.servo_pin(28)
 
@@ -35,20 +31,10 @@ def light_eye():
     for pixel_index in range(0,8):
             strip.set_pixel(pixel_index,(255,0,0),brightness)
             strip.show()
-
-
-def fire():
-  for i in range(20):
-      laser_1.duty_u16(4555)
-      laser_2.duty_u16(4555)
-      utime.sleep_ms(60)
-      laser_1.duty_u16(0)
-      laser_2.duty_u16(0)
-      utime.sleep_ms(60)
       
 def start_firing():
     if is_closing == False and closed_flag == False:
-        fire()
+        guns.fire()
     
     
 def stop():
