@@ -4,6 +4,7 @@
 #001.mp3, 002.mp3 etc.
 from utime import sleep_ms, sleep
 from picodfplayer import DFPlayer
+import random
 
 DEBUG = False
 #Constants. Change these if DFPlayer is connected to other pins.
@@ -12,11 +13,22 @@ TX_PIN = 12
 RX_PIN=13
 BUSY_PIN=6
 
+FIRE = "fire"
+FIRING = "firing"
+PRODUCT = "product"
 IS_ANYONE_THERE = "is_anyone_there"
 HELLO = "hello"
 ARE_YOU_STILL_THERE = "are_you_still_there"
 COME_OVER_HERE = "come_over_here"
 WHOS_THERE = "whos_there"
+SEARCHING = "searching"
+
+THERE_YOU_ARE = "there_you_are"
+I_SEE_YOU = "i_see_you"
+CAN_I_HELP_YOU = "can_i_help_you"
+TARGET_LOST = "target_lost"
+TARGET_ACQUIRED = "target_acquired"
+HI = "hi"
 
 dispensing_product = {"folder":1,"track":3}
 hi = {"folder":1, "track":1 }
@@ -53,12 +65,18 @@ deploy_arms = {"folder":9,"track":1}
 retract_arms = {"folder":9,"track":4}
 
 
-sound_map = {"product":dispensing_product, "hi":hi, "target_acquired": target_acquired, "firing":firing,
-             "there_you_are":there_you_are, "i_see_you":i_see_you, "activated":activated,
-             "whos_there":whos_there, "deploying":deploying, "preparing_dispense_product":preparing_dispense_product,
-             "shutting_down":shutting_down, "fire":fire, "are_you_still_there": are_you_still_there}
+sound_map = {PRODUCT:dispensing_product, HI:hi, TARGET_ACQUIRED: target_acquired, FIRING:firing,
+             THERE_YOU_ARE:there_you_are, I_SEE_YOU:i_see_you, "activated":activated,
+             WHOS_THERE:whos_there, "deploying":deploying, "preparing_dispense_product":preparing_dispense_product,
+             "shutting_down":shutting_down, FIRE:fire, ARE_YOU_STILL_THERE: are_you_still_there, IS_ANYONE_THERE:is_anyone_there,
+             HELLO:hello, TARGET_LOST:target_lost, SEARCHING: searching, COME_OVER_HERE:come_over_here,
+             CAN_I_HELP_YOU:can_i_help_you, HELLO:hello}
 
-searching_key_sound_collection = ["is_anyone_there"]
+searching_for_target = [IS_ANYONE_THERE, COME_OVER_HERE, SEARCHING]
+
+target_lost = [ARE_YOU_STILL_THERE, TARGET_LOST, HELLO]
+
+target_spotted = [I_SEE_YOU, CAN_I_HELP_YOU, THERE_YOU_ARE, WHOS_THERE, TARGET_ACQUIRED]
 
 #Create player instance
 player=DFPlayer(UART_INSTANCE, TX_PIN, RX_PIN, BUSY_PIN)
@@ -78,8 +96,17 @@ def play(key):
         print("folder=" + str(folder) + " track=" + str(track))
     player.playTrack(folder, track)
 
-def random_search():
-    print("play random sound dealing with searching")
+def target_spotted():
+    random_spotted_phrase = random.choice(target_spotted)
+    play(random_spotted_phrase)
+
+def target_lost():
+    random_lost_phrase = random.choice(target_lost)
+    play(random_lost_phrase)
+
+def target_search():
+    random_search_phrase = random.choice(searching_for_target)
+    play(random_search_phrase)
 
 if __name__=="__main__":
     play("product")

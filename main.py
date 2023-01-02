@@ -58,14 +58,12 @@ def close():
     global is_closing
     if is_closing == False:
         is_closing = True
-        turret_sound.play("are_you_still_there")
         utime.sleep_ms(2000)
         sg90.move_to(95)
 
 def open():
     #print("opening")
     global closed_flag, is_closing
-    turret_sound.play("i_see_you")
     utime.sleep_ms(2200)
     sg90.move_to(0)
     utime.sleep_ms(1000)
@@ -120,9 +118,9 @@ while True:
       stop()
       closed_flag = True
       #print("Detected", person_detected)
-  
   if closed_flag and person_detected==True:
-      utime.sleep_ms(1000)
+      utime.sleep_ms(300)
+      turret_sound.target_spotted()
       open()
       pressed = False
   elif closed_flag == False and person_detected==True:
@@ -130,5 +128,6 @@ while True:
       person_detected = False
       utime.sleep_ms(1000)
   elif closed_flag == False and is_closing == False and person_detected == False:
+      turret_sound.target_lost()
       close()
 
