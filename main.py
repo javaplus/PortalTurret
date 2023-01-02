@@ -120,7 +120,7 @@ while True:
       #print("Detected", person_detected)
   if closed_flag and person_detected==True:
       utime.sleep_ms(300)
-      turret_sound.target_spotted()
+      turret_sound.play_target_spotted()
       open()
       pressed = False
   elif closed_flag == False and person_detected==True:
@@ -128,6 +128,6 @@ while True:
       person_detected = False
       utime.sleep_ms(1000)
   elif closed_flag == False and is_closing == False and person_detected == False:
-      turret_sound.target_lost()
+      turret_sound.play_target_lost()
       close()
 
