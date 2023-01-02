@@ -96,15 +96,15 @@ def play(key):
         print("folder=" + str(folder) + " track=" + str(track))
     player.playTrack(folder, track)
 
-def target_spotted():
+def play_target_spotted():
     random_spotted_phrase = random.choice(target_spotted)
     play(random_spotted_phrase)
 
-def target_lost():
+def play_target_lost():
     random_lost_phrase = random.choice(target_lost)
     play(random_lost_phrase)
 
-def target_search():
+def play_target_search():
     random_search_phrase = random.choice(searching_for_target)
     play(random_search_phrase)
 
